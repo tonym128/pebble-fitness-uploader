@@ -3,7 +3,7 @@ class HealthRecordsController < ApplicationController
 
   # GET /health_records
   def index
-    @health_records = HealthRecord.all
+    @health_records = HealthRecord.where(user: @current_user)
 
     render json: @health_records
   end
@@ -16,6 +16,7 @@ class HealthRecordsController < ApplicationController
   # POST /health_records
   def create
     @health_record = HealthRecord.new(health_record_params)
+    @health_record.user= @current_user
 
     if @health_record.save
       render json: @health_record, status: :created, location: @health_record
@@ -26,7 +27,9 @@ class HealthRecordsController < ApplicationController
 
   # PATCH/PUT /health_records/1
   def update
-    if @health_record.update(health_record_params)
+    if @health_record.user != @current_user
+      render json: 'Record does not belong to user', status: :unprocessable_entity
+    elsif @health_record.update(health_record_params)
       render json: @health_record
     else
       render json: @health_record.errors, status: :unprocessable_entity
@@ -35,7 +38,11 @@ class HealthRecordsController < ApplicationController
 
   # DELETE /health_records/1
   def destroy
-    @health_record.destroy
+    if @health_record.user != @current_user
+      render json: 'Record does not belong to user', status: :unprocessable_entity
+    else
+      @health_record.destroy
+    end
   end
 
   private

@@ -2,10 +2,11 @@
 
 module Api::V1
   class HealthRecords < ApiController
+    before_action :authenticate
 
-    # GET /v1/users
+    # GET /v1/healthrecords
     def index
-      render json: HealthRecord.all
+      render json: HealthRecord.where(user: @current_user)
     end
 
   end

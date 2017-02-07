@@ -5,8 +5,6 @@ class ApplicationController < ActionController::API
   # Add a before_action to authenticate all requests.
   # Move this to subclassed controllers if you only
   # want to authenticate certain methods.
-  before_action :authenticate
-
   protected
 
   # Authenticate the user with token based authentication
