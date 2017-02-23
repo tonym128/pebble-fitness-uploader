@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   scope module: 'api' do
     namespace :v1 do
       resources :users
-      resources :health_records
+      resources :health_records do
+        match :batch_create, via: [:post],  on: :collection
+      end
     end
   end
 end

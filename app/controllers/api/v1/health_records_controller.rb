@@ -17,9 +17,13 @@ module Api::V1
 
     # POST /health_records
     def create
-      @health_record = HealthRecord.new(health_record_params)
-      @health_record.user= @current_user
+      @health_record = HealthRecord.find_by_timestamp_and_user_id(health_record_params[:timestamp], @current_user.id)
+      if !@health_record.nil?
+        return update
+      end
 
+      @health_record = HealthRecord.new(health_record_params)
+      @health_record.user = @current_user
       if @health_record.save
         render json: @health_record, status: :created, location: @health_record
       else
@@ -44,6 +48,18 @@ module Api::V1
         render json: 'Record does not belong to user', status: :unprocessable_entity
       else
         @health_record.destroy
+      end
+    end
+
+    # POST /health_records/batch_create
+    def batch_create
+      # call the batch create method within the student model
+      success = HealthRecord.batch_create(request.raw_post, @current_user)
+      # return an appropriate response
+      if success
+        render json: {success: 'Health Records added'}, status: :created
+      else
+        render json: {failed: 'Health Records not added'}, status: :unprocessable_entity
       end
     end
 
