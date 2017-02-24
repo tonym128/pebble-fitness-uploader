@@ -25,7 +25,7 @@ module Api::V1
       @health_record = HealthRecord.new(health_record_params)
       @health_record.user = @current_user
       if @health_record.save
-        render json: @health_record, status: :created, location: @health_record
+        render json: @health_record, status: :created
       else
         render json: @health_record.errors, status: :unprocessable_entity
       end
@@ -36,7 +36,7 @@ module Api::V1
       if @health_record.user != @current_user
         render json: 'Record does not belong to user', status: :unprocessable_entity
       elsif @health_record.update(health_record_params)
-        render json: @health_record
+        render json: @health_record, status: :accepted
       else
         render json: @health_record.errors, status: :unprocessable_entity
       end
