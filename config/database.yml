@@ -14,9 +14,3 @@ test:
   database: pebble_fitness_uploader_test
 
 production:
-  adapter: mysql2
-  host: <%= ENV['DATABASE_URL'] %>
-  database: pebble_fitness_uploader_production
-  port: 3306
-  username: <%= ENV['DATABASE_USERNAME'] %>
-  password: <%= ENV['DATABASE_PASSWORD'] %>
