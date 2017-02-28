@@ -9,7 +9,8 @@ class HealthRecord < ApplicationRecord
     begin
       HealthRecord.transaction do
         JSON.parse(post_content).each do |healthrecord_hash|
-          @record = HealthRecord.find_by_timestamp_and_user_id(healthrecord_hash['timestamp'], current_user.id)
+          @record = HealthRecord.where(:timestamp => healthrecord_hash['timestamp'], :user => current_user).first
+
           if !@record.nil?
             @record.update!(healthrecord_hash)
           else
