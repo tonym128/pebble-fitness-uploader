@@ -1,4 +1,13 @@
 class HealthRecord < ApplicationRecord
+  include Filterable
+  scope :start_date, -> (timestamp) { where("timestamp >= '#{timestamp}'") }
+  scope :end_date, -> (timestamp) { where("timestamp <= '#{timestamp}'") }
+  scope :user_id, -> (user_id) { where user_id: user_id }
+  scope :min_heart_rate, -> (hrbpm) { where("hrbpm >= #{hrbpm}") }
+  scope :max_heart_rate, -> (hrbpm) { where("hrbpm <= #{hrbpm}") }
+  scope :min_steps, -> (steps) { where("steps >= #{steps}") }
+  scope :max_steps, -> (steps) { where("steps <= #{steps}") }
+
   belongs_to :user
   validates :timestamp,
             presence: true,

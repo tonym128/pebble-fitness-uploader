@@ -5,7 +5,7 @@ module Api::V1
 
     # GET /health_records
     def index
-      @health_records = HealthRecord.where(user: @current_user)
+      @health_records = HealthRecord.where(user: @current_user).filter(params.slice(:start_date, :end_date, :max_heart_rate, :min_heart_rate, :max_steps, :min_steps))
 
       render json: @health_records
     end
