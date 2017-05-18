@@ -53,7 +53,7 @@ module Api::V1
 
     # POST /health_records/batch_create
     def batch_create
-      # call the batch create method within the student model
+      # call the batch create method within the model
       success = HealthRecord.batch_create(request.raw_post, @current_user)
       # return an appropriate response
       if success
